@@ -1,5 +1,9 @@
 <template>
-  <div class="spinner mt-6 flex flex-row justify-center" v-if="movies.loading">
+  <div
+    class="spinner mt-6 mb-12 flex flex-row items-center justify-center text-gray-400"
+    v-if="movies.loading"
+  >
+    <img :src="spinner" class="mr-3" />
     Loading...
   </div>
   <div
@@ -15,6 +19,9 @@
 </template>
 
 <script setup lang="ts">
+// Import spinner img
+import spinner from '@/assets/img/spinner.gif';
+
 // Import Pinia store
 import { useMoviesStore } from '@/stores/movies';
 
