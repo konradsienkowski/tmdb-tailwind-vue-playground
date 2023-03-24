@@ -6,18 +6,22 @@ import { useAxios } from '@vueuse/integrations/useAxios';
 
 // Type state
 export interface Movie {
-  adult: boolean,
+  adult?: boolean,
   backdrop_path: string,
+  first_air_date?: string,
   genre_ids: number[],
   id: number,
+  name?: string,
+  original_name?: string,
+  origin_country?: string[],
   original_language: string,
-  original_title: string,
+  original_title?: string,
   overview: string,
   popularity: number,
   poster_path: string,
-  release_date: string,
-  title: string,
-  video: boolean,
+  release_date?: string,
+  title?: string,
+  video?: boolean,
   vote_average: number,
   vote_count: number
 }
@@ -40,6 +44,7 @@ interface State {
       name: string
     }
   },
+  type: 'movie' | 'tv',
   query: string,
   results: {
     list: Movie[],
@@ -56,6 +61,7 @@ export const useMoviesStore = defineStore({
   state: (): State => ({
     config: {},
     genres: {},
+    type: 'movie',
     query: '',
     results: {
       list: []
@@ -90,7 +96,7 @@ export const useMoviesStore = defineStore({
     async search () {
       this.loading = true;
       try {
-        const { data } = await useAxios(`/search/movie?api_key=${import.meta.env.VITE_API_KEY}&query=${this.query}`, { method: 'GET' }, api);
+        const { data } = await useAxios(`/search/${this.type}?api_key=${import.meta.env.VITE_API_KEY}&query=${this.query}`, { method: 'GET' }, api);
         if (!data.value) return;
         this.results = {
           list: data.value.results,

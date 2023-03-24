@@ -11,24 +11,29 @@
         :src="`${movies.config.images?.base_url}${movies.config.images?.poster_sizes[2]}${movie.poster_path}`"
       />
       <span
-        :class="`absolute top-4 -right-7 z-10 h-14 w-14 rounded-full bg-gradient-to-r ${badgeColor} flex items-center justify-center text-center text-xl font-bold text-white`"
-        >{{ movie.vote_average }}</span
+        :class="`absolute top-4 -right-7 z-10 h-14 w-14 rounded-full bg-gradient-to-r ${badgeColor} flex 
+        items-center justify-center text-center text-xl font-bold text-white`"
+        >{{ movie.vote_average.toFixed(1) }}</span
       >
     </figure>
     <div class="ml-8 px-4 py-3">
-      <div class="mb-1">
+      <div class="mb-1" v-if="movie.genre_ids">
         <span
           class="text-gray-400"
           v-for="(genre, i) in movie.genre_ids"
           :key="genre"
-          >{{ movies.genres[genre].name
-          }}<template v-if="i < movie.genre_ids.length - 1">, </template>
+        >
+          <template v-if="movies.genres[genre]">{{
+            movies.genres[genre].name
+          }}</template>
+          <template v-if="i < movie.genre_ids.length - 1">, </template>
         </span>
       </div>
       <h2
         class="mb-4 border-b border-b-gray-600 pb-4 text-2xl font-semibold text-white"
+        v-if="title"
       >
-        {{ movie.title }}
+        {{ title }}
       </h2>
       <div class="text-gray-300">
         {{ useExcerpt({ content: movie.overview }) }}
@@ -53,6 +58,13 @@ const props = defineProps<{
 
 // Use Pinia store
 const movies = useMoviesStore();
+
+// Get the movie / TV show title
+const title: ComputedRef<string | null> = computed(() => {
+  if (props.movie.name) return props.movie.name;
+  else if (props.movie.title) return props.movie.title;
+  else return null;
+});
 
 // Set vote badge color based on average score
 const badgeColor: ComputedRef<string | null> = computed(() => {

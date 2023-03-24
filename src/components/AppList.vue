@@ -1,13 +1,13 @@
 <template>
   <div
-    class="spinner mt-6 mb-12 flex flex-row items-center justify-center text-gray-400"
+    class="spinner mt-8 mb-12 flex flex-row items-center justify-center text-gray-400"
     v-if="movies.loading"
   >
     <img :src="spinner" class="mr-3" />
     Loading...
   </div>
   <div
-    class="list mt-6 flex flex-col"
+    class="list mt-8 flex flex-col"
     v-if="!movies.loading && movies.results.list.length"
   >
     <AppMovie
